@@ -267,14 +267,14 @@ static void DrawUsingCoreGraphics(PluginObject *obj, CGContextRef cgContext)
 	[[NSColor whiteColor] set];
 	NSRectFillUsingOperation(boundingBox, NSCompositeSourceOver);
 	// Flip the context so the image draws right side up:
-	CGContextTranslateCTM(cgContext, 0, imageSize.height);
+	CGContextTranslateCTM(cgContext, 0, obj->window.height);
 	CGContextScaleCTM(cgContext, 1.0, -1.0);
 	if (obj->theImage)
 	{
 		if (obj->drawCentered)
 			CGContextDrawImage(cgContext, CGRectMake(obj->window.width/2.0-imageSize.width/2.0, obj->window.height/2.0-imageSize.height/2.0, imageSize.width, imageSize.height), obj->theImage);
 		else
-			CGContextDrawImage(cgContext, CGRectMake(0.0, 0.0, imageSize.width, imageSize.height), obj->theImage);
+			CGContextDrawImage(cgContext, CGRectMake(0.0, 0.0, obj->window.width, obj->window.height), obj->theImage);
 	}
 	[NSGraphicsContext setCurrentContext:oldContext];
 }
