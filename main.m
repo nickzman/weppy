@@ -42,8 +42,8 @@ NPError NPP_Destroy(NPP instance, NPSavedData** save);
 NPError NPP_SetWindow(NPP instance, NPWindow* window);
 NPError NPP_NewStream(NPP instance, NPMIMEType type, NPStream* stream, NPBool seekable, uint16_t* stype);
 NPError NPP_DestroyStream(NPP instance, NPStream* stream, NPReason reason);
-int32 NPP_WriteReady(NPP instance, NPStream* stream);
-int32 NPP_Write(NPP instance, NPStream* stream, int32 offset, int32 len, void* buffer);
+int32_t NPP_WriteReady(NPP instance, NPStream* stream);
+int32_t NPP_Write(NPP instance, NPStream* stream, int32_t offset, int32_t len, void* buffer);
 void NPP_StreamAsFile(NPP instance, NPStream* stream, const char* fname);
 void NPP_Print(NPP instance, NPPrint* platformPrint);
 int16_t NPP_HandleEvent(NPP instance, void* event);
@@ -199,7 +199,7 @@ NPError NPP_DestroyStream(NPP instance, NPStream* stream, NPReason reason)
 		
 		if (obj->theImage)
 		{
-			obj->caLayer.contentsGravity = kCAGravityResizeAspect;
+			obj->caLayer.contentsGravity = kCAGravityResize;
 			obj->caLayer.contents = (id)obj->theImage;
 		}
 	}
@@ -232,12 +232,14 @@ NPError NPP_DestroyStream(NPP instance, NPStream* stream, NPReason reason)
 	return NPERR_NO_ERROR;
 }
 
-int32 NPP_WriteReady(NPP instance, NPStream* stream)
+
+int32_t NPP_WriteReady(NPP instance, NPStream* stream)
 {
     return INT_MAX;	// bring it on!
 }
 
-int32 NPP_Write(NPP instance, NPStream* stream, int32 offset, int32 len, void* buffer)
+
+int32_t NPP_Write(NPP instance, NPStream* stream, int32_t offset, int32_t len, void* buffer)
 {
 	PluginObject *obj = instance->pdata;
 	
@@ -245,17 +247,14 @@ int32 NPP_Write(NPP instance, NPStream* stream, int32 offset, int32 len, void* b
     return len;
 }
 
-void NPP_StreamAsFile(NPP instance, NPStream* stream, const char* fname)
-{
-}
 
-void NPP_Print(NPP instance, NPPrint* platformPrint)
+void NPP_StreamAsFile(NPP instance, NPStream* stream, const char* fname)
 {
 	
 }
 
 
-static void DrawUsingCoreGraphics(PluginObject *obj, CGContextRef cgContext)
+static void DrawUsingCoreGraphics(PluginObject *obj, CGContextRef cgContext, NPBool flipImage)
 {
 	NSGraphicsContext *oldContext = [[NSGraphicsContext currentContext] retain];
     NSGraphicsContext *context = [NSGraphicsContext graphicsContextWithGraphicsPort:cgContext flipped:YES];
@@ -266,9 +265,12 @@ static void DrawUsingCoreGraphics(PluginObject *obj, CGContextRef cgContext)
 	// Draw the background:
 	[[NSColor whiteColor] set];
 	NSRectFillUsingOperation(boundingBox, NSCompositeSourceOver);
-	// Flip the context so the image draws right side up:
-	CGContextTranslateCTM(cgContext, 0, obj->window.height);
-	CGContextScaleCTM(cgContext, 1.0, -1.0);
+	if (flipImage)
+	{
+		// Flip the context so the image draws right side up:
+		CGContextTranslateCTM(cgContext, 0, obj->window.height);
+		CGContextScaleCTM(cgContext, 1.0, -1.0);
+	}
 	if (obj->theImage)
 	{
 		if (obj->drawCentered)
@@ -277,6 +279,24 @@ static void DrawUsingCoreGraphics(PluginObject *obj, CGContextRef cgContext)
 			CGContextDrawImage(cgContext, CGRectMake(0.0, 0.0, obj->window.width, obj->window.height), obj->theImage);
 	}
 	[NSGraphicsContext setCurrentContext:oldContext];
+}
+
+
+void NPP_Print(NPP instance, NPPrint* platformPrint)
+{
+#ifndef __LP64__
+	if (platformPrint->mode == NP_EMBED)
+	{
+		// The last time I tried compiling this using LLVM, the compiler mangled the platformPrint data structure. Oops. It seems to work with GCC, though.
+		PluginObject *obj = instance->pdata;
+		CGContextRef context;
+		GWorldPtr iCantBelieveImActuallyDoingThisIn2010 = platformPrint->print.embedPrint.platformPrint;
+		
+		QDBeginCGContext(iCantBelieveImActuallyDoingThisIn2010, &context);
+		DrawUsingCoreGraphics(obj, context, FALSE);
+		QDEndCGContext(iCantBelieveImActuallyDoingThisIn2010, &context);
+	}
+#endif
 }
 
 
@@ -291,7 +311,7 @@ int16_t NPP_HandleEvent(NPP instance, void* event)
 		case NPCocoaEventDrawRect:
 			if (!obj->caLayer)
 			{
-				DrawUsingCoreGraphics(obj, cocoaEvent->data.draw.context);
+				DrawUsingCoreGraphics(obj, cocoaEvent->data.draw.context, TRUE);
 				return 1;
 			}
 			break;
@@ -306,7 +326,8 @@ int16_t NPP_HandleEvent(NPP instance, void* event)
 		NP_CGContext *npcontext = obj->window.window;
 		CGContextRef context = npcontext->context;
 		
-		DrawUsingCoreGraphics(obj, context);
+		DrawUsingCoreGraphics(obj, context, TRUE);
+		return 1;
 	}
 #endif
 	return 0;
