@@ -1,0 +1,8 @@
+//
+// Prefix header for all source files of the 'Weppy' target in the 'Weppy' project.
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+    #import <WebKit/WebKit.h>
+#endif
