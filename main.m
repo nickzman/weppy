@@ -42,8 +42,8 @@ NPError NPP_Destroy(NPP instance, NPSavedData** save);
 NPError NPP_SetWindow(NPP instance, NPWindow* window);
 NPError NPP_NewStream(NPP instance, NPMIMEType type, NPStream* stream, NPBool seekable, uint16_t* stype);
 NPError NPP_DestroyStream(NPP instance, NPStream* stream, NPReason reason);
-int32_t NPP_WriteReady(NPP instance, NPStream* stream);
-int32_t NPP_Write(NPP instance, NPStream* stream, int32_t offset, int32_t len, void* buffer);
+int32 NPP_WriteReady(NPP instance, NPStream* stream);
+int32 NPP_Write(NPP instance, NPStream* stream, int32 offset, int32 len, void* buffer);
 void NPP_StreamAsFile(NPP instance, NPStream* stream, const char* fname);
 void NPP_Print(NPP instance, NPPrint* platformPrint);
 int16_t NPP_HandleEvent(NPP instance, void* event);
@@ -109,22 +109,18 @@ NPError NPP_New(NPMIMEType pluginType, NPP instance, uint16_t mode, int16_t argc
     // Ask the browser if it supports the CoreGraphics drawing model
     if (browser->getvalue(instance, NPNVsupportsCoreGraphicsBool, &supportsCoreGraphics) != NPERR_NO_ERROR)
         supportsCoreGraphics = FALSE;
-#ifdef __LP64__
-	if (browser->getvalue(instance, NPNVsupportsCoreAnimationBool, &supportsCoreAnimation) != NPERR_NO_ERROR)
+	if (browser->getvalue(instance, /*NPNVsupportsCoreAnimationBool*/2003, &supportsCoreAnimation) != NPERR_NO_ERROR)
 		supportsCoreAnimation = FALSE;
-#endif
     if (!supportsCoreGraphics && !supportsCoreAnimation)	// we don't support QuickDraw, sorry
         return NPERR_INCOMPATIBLE_VERSION_ERROR;
     
 	// Prefer CoreAnimation over CoreGraphics when choosing drawing models.
-#ifdef __LP64__
 	if (supportsCoreAnimation)
 	{
-		browser->setvalue(instance, NPNVpluginDrawingModel, (void *)NPDrawingModelCoreAnimation);
+		browser->setvalue(instance, NPNVpluginDrawingModel, (void *)/*NPDrawingModelCoreAnimation*/3);
 		obj->caLayer = [[CALayer alloc] init];
 	}
 	else
-#endif
 	{
 		browser->setvalue(instance, NPNVpluginDrawingModel, (void *)NPDrawingModelCoreGraphics);
 	}
@@ -233,13 +229,13 @@ NPError NPP_DestroyStream(NPP instance, NPStream* stream, NPReason reason)
 }
 
 
-int32_t NPP_WriteReady(NPP instance, NPStream* stream)
+int32 NPP_WriteReady(NPP instance, NPStream* stream)
 {
     return INT_MAX;	// bring it on!
 }
 
 
-int32_t NPP_Write(NPP instance, NPStream* stream, int32_t offset, int32_t len, void* buffer)
+int32 NPP_Write(NPP instance, NPStream* stream, int32 offset, int32 len, void* buffer)
 {
 	PluginObject *obj = instance->pdata;
 	
@@ -296,6 +292,10 @@ void NPP_Print(NPP instance, NPPrint* platformPrint)
 		DrawUsingCoreGraphics(obj, context, FALSE);
 		QDEndCGContext(iCantBelieveImActuallyDoingThisIn2010, &context);
 	}
+#else
+	// Apparently all we can get from NPP_Print is a GWorldPtr and not a CGContext. Because QuickDraw is not available in 64-bit apps, this means that we shouldn't be able to print in a 64-bit plugin.
+	// However, the 64-bit Flash Player Square supports it anyway. How in the world did they do that?
+#warning Printing does not work in 64-bit builds (see comment).
 #endif
 }
 
@@ -333,24 +333,25 @@ int16_t NPP_HandleEvent(NPP instance, void* event)
 	return 0;
 }
 
+
 void NPP_URLNotify(NPP instance, const char* url, NPReason reason, void* notifyData)
 {
 	
 }
 
+
 NPError NPP_GetValue(NPP instance, NPPVariable variable, void *value)
 {
-#ifdef __LP64__
 	PluginObject *obj = instance->pdata;
 	
-	if (variable == NPPVpluginCoreAnimationLayer)
+	if (variable == /*NPPVpluginCoreAnimationLayer*/1003)
 	{
 		*((CALayer **)value) = [obj->caLayer retain];
 		return NPERR_NO_ERROR;
 	}
-#endif
     return NPERR_GENERIC_ERROR;
 }
+
 
 NPError NPP_SetValue(NPP instance, NPNVariable variable, void *value)
 {

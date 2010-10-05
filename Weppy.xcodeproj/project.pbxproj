@@ -339,6 +339,7 @@
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				PREBINDING = NO;
 				PRODUCT_NAME = Weppy;
+				"SDKROOT[arch=x86_64]" = macosx10.6;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Debug;
@@ -358,6 +359,7 @@
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				PREBINDING = NO;
 				PRODUCT_NAME = Weppy;
+				"SDKROOT[arch=x86_64]" = macosx10.6;
 				WRAPPER_EXTENSION = plugin;
 				ZERO_LINK = NO;
 			};
