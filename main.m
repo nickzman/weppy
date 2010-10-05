@@ -264,15 +264,15 @@ static void DrawUsingCoreGraphics(PluginObject *obj, CGContextRef cgContext, NPB
 	if (flipImage)
 	{
 		// Flip the context so the image draws right side up:
-		CGContextTranslateCTM(cgContext, 0, obj->window.height);
+		CGContextTranslateCTM(cgContext, 0, boundingBox.size.height);
 		CGContextScaleCTM(cgContext, 1.0, -1.0);
 	}
 	if (obj->theImage)
 	{
 		if (obj->drawCentered)
-			CGContextDrawImage(cgContext, CGRectMake(obj->window.width/2.0-imageSize.width/2.0, obj->window.height/2.0-imageSize.height/2.0, imageSize.width, imageSize.height), obj->theImage);
+			CGContextDrawImage(cgContext, CGRectMake((boundingBox.origin.x+boundingBox.size.width)/2.0-imageSize.width/2.0, (boundingBox.origin.y+boundingBox.size.height)/2.0-imageSize.height/2.0, imageSize.width, imageSize.height), obj->theImage);
 		else
-			CGContextDrawImage(cgContext, CGRectMake(0.0, 0.0, obj->window.width, obj->window.height), obj->theImage);
+			CGContextDrawImage(cgContext, /*CGRectMake(0.0, 0.0, obj->window.width, obj->window.height)*/boundingBox, obj->theImage);
 	}
 	[NSGraphicsContext setCurrentContext:oldContext];
 }
@@ -324,10 +324,14 @@ int16_t NPP_HandleEvent(NPP instance, void* event)
 	if (carbonEvent->what == updateEvt)
 	{
 		NP_CGContext *npcontext = obj->window.window;
-		CGContextRef context = npcontext->context;
 		
-		DrawUsingCoreGraphics(obj, context, TRUE);
-		return 1;
+		if (npcontext)	// sometimes this is null
+		{
+			CGContextRef context = npcontext->context;
+			
+			DrawUsingCoreGraphics(obj, context, TRUE);
+			return 1;
+		}
 	}
 #endif
 	return 0;
