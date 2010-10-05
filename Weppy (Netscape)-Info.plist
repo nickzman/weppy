@@ -9,25 +9,23 @@
 	<key>CFBundleIconFile</key>
 	<string></string>
 	<key>CFBundleIdentifier</key>
-	<string>net.comcast.home.seiryu.webkit.${PRODUCT_NAME:identifier}</string>
+	<string>net.comcast.home.seiryu.${PRODUCT_NAME:identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundlePackageType</key>
-	<string>WBPL</string>
+	<string>BRPL</string>
 	<key>CFBundleSignature</key>
 	<string>Wepy</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
-	<key>NSPrincipalClass</key>
-	<string>WeppyView</string>
 	<key>WebPluginName</key>
 	<string>Weppy</string>
 	<key>WebPluginDescription</key>
-	<string>Plugin that enables WebKit-based Mac Web browsers to display WebP format images.</string>
+	<string>Plugin that enables Mac Web browsers to display WebP format images.</string>
 	<key>WebPluginMIMETypes</key>
 	<dict>
 		<key>image/webp</key>

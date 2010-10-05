@@ -7,31 +7,41 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		224339580A6F05F3000348D4 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 224339570A6F05F3000348D4 /* WebKit.framework */; };
+		8D1AC96B0486D14A00FE50C9 /* WeppyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0259C576FE90428111CA0C5A /* WeppyView.m */; settings = {ATTRIBUTES = (); }; };
 		8D1AC9700486D14A00FE50C9 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD92D38A0106425D02CA0E72 /* Cocoa.framework */; };
 		8D1AC9800486D23B00FE50C9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D1AC97F0486D23B00FE50C9 /* InfoPlist.strings */; };
-		E0E2B60912591A840019FEED /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E0E2B60812591A840019FEED /* main.m */; };
-		E0E2B63D125923310019FEED /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0E2B63C125923310019FEED /* QuartzCore.framework */; };
-		E0E2B64F125928E60019FEED /* NZCGWebPFunctions.c in Sources */ = {isa = PBXBuildFile; fileRef = E0E2B64D125928E60019FEED /* NZCGWebPFunctions.c */; };
-		E0E2B652125929020019FEED /* webpimg.c in Sources */ = {isa = PBXBuildFile; fileRef = E0E2B650125929020019FEED /* webpimg.c */; };
-		E0E2B654125929270019FEED /* libvpx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E0E2B653125929270019FEED /* libvpx.a */; };
-		E0E2B740125945FB0019FEED /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0E2B73F125945FB0019FEED /* Carbon.framework */; };
+		E0013AC3125AC3770093A888 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E0013AC2125AC3770093A888 /* main.m */; };
+		E0013AC8125AC3860093A888 /* NZCGWebPFunctions.c in Sources */ = {isa = PBXBuildFile; fileRef = E0013AC4125AC3860093A888 /* NZCGWebPFunctions.c */; };
+		E0013AC9125AC3860093A888 /* webpimg.c in Sources */ = {isa = PBXBuildFile; fileRef = E0013AC6125AC3860093A888 /* webpimg.c */; };
+		E0013ACA125AC3860093A888 /* NZCGWebPFunctions.c in Sources */ = {isa = PBXBuildFile; fileRef = E0013AC4125AC3860093A888 /* NZCGWebPFunctions.c */; };
+		E0013ACB125AC3860093A888 /* webpimg.c in Sources */ = {isa = PBXBuildFile; fileRef = E0013AC6125AC3860093A888 /* webpimg.c */; };
+		E0013ACE125AC3F00093A888 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0013ACD125AC3F00093A888 /* QuartzCore.framework */; };
+		E0013AD0125AC40B0093A888 /* libvpx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E0013ACF125AC40B0093A888 /* libvpx.a */; };
+		E0013AD1125AC40B0093A888 /* libvpx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E0013ACF125AC40B0093A888 /* libvpx.a */; };
+		E0013ADB125AC4F90093A888 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD92D38A0106425D02CA0E72 /* Cocoa.framework */; };
+		E0013ADC125AC4FB0093A888 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0013ACD125AC3F00093A888 /* QuartzCore.framework */; };
+		E0013AEB125AC5600093A888 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D1AC97F0486D23B00FE50C9 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0259C576FE90428111CA0C5A /* WeppyView.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = WeppyView.m; sourceTree = "<group>"; };
+		0259C57AFE90428111CA0C5A /* WeppyView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = WeppyView.h; sourceTree = "<group>"; };
 		224339570A6F05F3000348D4 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
 		32DBCF980370C29C00C91783 /* Weppy_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Weppy_Prefix.pch; sourceTree = "<group>"; };
 		8D1AC9730486D14A00FE50C9 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		8D1AC9740486D14A00FE50C9 /* Weppy.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Weppy.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D1AC9740486D14A00FE50C9 /* Weppy.webplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Weppy.webplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D1AC97B0486D23100FE50C9 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		DD92D38A0106425D02CA0E72 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		E0E2B60812591A840019FEED /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		E0E2B63C125923310019FEED /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = /System/Library/Frameworks/QuartzCore.framework; sourceTree = "<absolute>"; };
-		E0E2B64D125928E60019FEED /* NZCGWebPFunctions.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = NZCGWebPFunctions.c; sourceTree = "<group>"; };
-		E0E2B64E125928E60019FEED /* NZCGWebPFunctions.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NZCGWebPFunctions.h; sourceTree = "<group>"; };
-		E0E2B650125929020019FEED /* webpimg.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = webpimg.c; sourceTree = "<group>"; };
-		E0E2B651125929020019FEED /* webpimg.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = webpimg.h; sourceTree = "<group>"; };
-		E0E2B653125929270019FEED /* libvpx.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvpx.a; path = /usr/local/lib/libvpx.a; sourceTree = "<absolute>"; };
-		E0E2B73F125945FB0019FEED /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		E0013AB1125AC2E00093A888 /* Weppy.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Weppy.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0013AB2125AC2E00093A888 /* Weppy (Netscape)-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Weppy (Netscape)-Info.plist"; sourceTree = "<group>"; };
+		E0013AC2125AC3770093A888 /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E0013AC4125AC3860093A888 /* NZCGWebPFunctions.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = NZCGWebPFunctions.c; sourceTree = "<group>"; };
+		E0013AC5125AC3860093A888 /* NZCGWebPFunctions.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NZCGWebPFunctions.h; sourceTree = "<group>"; };
+		E0013AC6125AC3860093A888 /* webpimg.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = webpimg.c; sourceTree = "<group>"; };
+		E0013AC7125AC3860093A888 /* webpimg.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = webpimg.h; sourceTree = "<group>"; };
+		E0013ACD125AC3F00093A888 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		E0013ACF125AC40B0093A888 /* libvpx.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvpx.a; path = /usr/local/lib/libvpx.a; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,9 +50,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D1AC9700486D14A00FE50C9 /* Cocoa.framework in Frameworks */,
-				E0E2B63D125923310019FEED /* QuartzCore.framework in Frameworks */,
-				E0E2B654125929270019FEED /* libvpx.a in Frameworks */,
-				E0E2B740125945FB0019FEED /* Carbon.framework in Frameworks */,
+				224339580A6F05F3000348D4 /* WebKit.framework in Frameworks */,
+				E0013ACE125AC3F00093A888 /* QuartzCore.framework in Frameworks */,
+				E0013AD1125AC40B0093A888 /* libvpx.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E0013AAF125AC2E00093A888 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E0013AD0125AC40B0093A888 /* libvpx.a in Frameworks */,
+				E0013ADB125AC4F90093A888 /* Cocoa.framework in Frameworks */,
+				E0013ADC125AC4FB0093A888 /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				8D1AC9730486D14A00FE50C9 /* Info.plist */,
+				E0013AB2125AC2E00093A888 /* Weppy (Netscape)-Info.plist */,
 				8D1AC97F0486D23B00FE50C9 /* InfoPlist.strings */,
 			);
 			name = Resources;
@@ -73,7 +94,8 @@
 		1ED78706FE9D4A0611CA0C5A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8D1AC9740486D14A00FE50C9 /* Weppy.plugin */,
+				8D1AC9740486D14A00FE50C9 /* Weppy.webplugin */,
+				E0013AB1125AC2E00093A888 /* Weppy.plugin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -81,11 +103,10 @@
 		2E58F364FFB232C311CA0CBA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				E0E2B653125929270019FEED /* libvpx.a */,
+				E0013ACF125AC40B0093A888 /* libvpx.a */,
 				DD92D38A0106425D02CA0E72 /* Cocoa.framework */,
 				224339570A6F05F3000348D4 /* WebKit.framework */,
-				E0E2B63C125923310019FEED /* QuartzCore.framework */,
-				E0E2B73F125945FB0019FEED /* Carbon.framework */,
+				E0013ACD125AC3F00093A888 /* QuartzCore.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -93,11 +114,13 @@
 		32DBCF9E0370C38000C91783 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				E0E2B60812591A840019FEED /* main.m */,
-				E0E2B64E125928E60019FEED /* NZCGWebPFunctions.h */,
-				E0E2B64D125928E60019FEED /* NZCGWebPFunctions.c */,
-				E0E2B651125929020019FEED /* webpimg.h */,
-				E0E2B650125929020019FEED /* webpimg.c */,
+				0259C57AFE90428111CA0C5A /* WeppyView.h */,
+				0259C576FE90428111CA0C5A /* WeppyView.m */,
+				E0013AC2125AC3770093A888 /* main.m */,
+				E0013AC5125AC3860093A888 /* NZCGWebPFunctions.h */,
+				E0013AC4125AC3860093A888 /* NZCGWebPFunctions.c */,
+				E0013AC7125AC3860093A888 /* webpimg.h */,
+				E0013AC6125AC3860093A888 /* webpimg.c */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -128,7 +151,24 @@
 			name = Weppy;
 			productInstallPath = "$(HOME)/Developer/Palettes";
 			productName = Weppy;
-			productReference = 8D1AC9740486D14A00FE50C9 /* Weppy.plugin */;
+			productReference = 8D1AC9740486D14A00FE50C9 /* Weppy.webplugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+		E0013AB0125AC2E00093A888 /* Weppy (Netscape) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E0013AB5125AC2E10093A888 /* Build configuration list for PBXNativeTarget "Weppy (Netscape)" */;
+			buildPhases = (
+				E0013AAD125AC2E00093A888 /* Resources */,
+				E0013AAE125AC2E00093A888 /* Sources */,
+				E0013AAF125AC2E00093A888 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Weppy (Netscape)";
+			productName = "Weppy (Netscape)";
+			productReference = E0013AB1125AC2E00093A888 /* Weppy.plugin */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -151,6 +191,7 @@
 			projectRoot = "";
 			targets = (
 				8D1AC9600486D14A00FE50C9 /* Weppy */,
+				E0013AB0125AC2E00093A888 /* Weppy (Netscape) */,
 			);
 		};
 /* End PBXProject section */
@@ -164,6 +205,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E0013AAD125AC2E00093A888 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E0013AEB125AC5600093A888 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -171,9 +220,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E0E2B60912591A840019FEED /* main.m in Sources */,
-				E0E2B64F125928E60019FEED /* NZCGWebPFunctions.c in Sources */,
-				E0E2B652125929020019FEED /* webpimg.c in Sources */,
+				8D1AC96B0486D14A00FE50C9 /* WeppyView.m in Sources */,
+				E0013ACA125AC3860093A888 /* NZCGWebPFunctions.c in Sources */,
+				E0013ACB125AC3860093A888 /* webpimg.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E0013AAE125AC2E00093A888 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E0013AC3125AC3770093A888 /* main.m in Sources */,
+				E0013AC8125AC3860093A888 /* NZCGWebPFunctions.c in Sources */,
+				E0013AC9125AC3860093A888 /* webpimg.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -201,17 +260,11 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Weppy_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = NS_BUILD_32_LIKE_64;
-				HEADER_SEARCH_PATHS = /usr/local/include;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Internet Plug-Ins";
-				"OTHER_LDFLAGS[arch=i386]" = (
-					"-read_only_relocs",
-					suppress,
-				);
 				PRODUCT_NAME = Weppy;
 				WARNING_CFLAGS = "-Wall";
-				WRAPPER_EXTENSION = plugin;
+				WRAPPER_EXTENSION = webplugin;
 			};
 			name = Debug;
 		};
@@ -223,17 +276,11 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Weppy_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = NS_BUILD_32_LIKE_64;
-				HEADER_SEARCH_PATHS = /usr/local/include;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Internet Plug-Ins";
-				"OTHER_LDFLAGS[arch=i386]" = (
-					"-read_only_relocs",
-					suppress,
-				);
 				PRODUCT_NAME = Weppy;
 				WARNING_CFLAGS = "-Wall";
-				WRAPPER_EXTENSION = plugin;
+				WRAPPER_EXTENSION = webplugin;
 			};
 			name = Release;
 		};
@@ -243,12 +290,17 @@
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_GC = supported;
+				GCC_PREPROCESSOR_DEFINITIONS = NS_BUILD_32_LIKE_64;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = /usr/local/include;
 				ONLY_ACTIVE_ARCH = YES;
+				"OTHER_LDFLAGS[arch=i386]" = (
+					"-read_only_relocs",
+					suppress,
+				);
 				PREBINDING = NO;
 				SDKROOT = macosx10.5;
-				"SDKROOT[arch=x86_64]" = macosx10.6;
 			};
 			name = Debug;
 		};
@@ -258,11 +310,56 @@
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_GC = supported;
+				GCC_PREPROCESSOR_DEFINITIONS = NS_BUILD_32_LIKE_64;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				"OTHER_LDFLAGS[arch=i386]" = (
+					"-read_only_relocs",
+					suppress,
+				);
 				PREBINDING = NO;
 				SDKROOT = macosx10.5;
-				"SDKROOT[arch=x86_64]" = macosx10.6;
+			};
+			name = Release;
+		};
+		E0013AB3125AC2E10093A888 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Weppy_Prefix.pch;
+				INFOPLIST_FILE = "Weppy (Netscape)-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				PREBINDING = NO;
+				PRODUCT_NAME = Weppy;
+				WRAPPER_EXTENSION = plugin;
+			};
+			name = Debug;
+		};
+		E0013AB4125AC2E10093A888 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Weppy_Prefix.pch;
+				INFOPLIST_FILE = "Weppy (Netscape)-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				PREBINDING = NO;
+				PRODUCT_NAME = Weppy;
+				WRAPPER_EXTENSION = plugin;
+				ZERO_LINK = NO;
 			};
 			name = Release;
 		};
@@ -283,6 +380,15 @@
 			buildConfigurations = (
 				C027D11E08A954E7001699E2 /* Debug */,
 				C027D11F08A954E7001699E2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E0013AB5125AC2E10093A888 /* Build configuration list for PBXNativeTarget "Weppy (Netscape)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E0013AB3125AC2E10093A888 /* Debug */,
+				E0013AB4125AC2E10093A888 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
