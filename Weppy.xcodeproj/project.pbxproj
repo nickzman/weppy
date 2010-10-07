@@ -291,10 +291,13 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_GC = supported;
 				GCC_PREPROCESSOR_DEFINITIONS = NS_BUILD_32_LIKE_64;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/local/include;
 				ONLY_ACTIVE_ARCH = YES;
+				"OTHER_CFLAGS[arch=i386]" = "-fsingle-precision-constant";
+				"OTHER_CFLAGS[arch=ppc]" = "-fsingle-precision-constant";
 				"OTHER_LDFLAGS[arch=i386]" = (
 					"-read_only_relocs",
 					suppress,
@@ -311,9 +314,12 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_GC = supported;
 				GCC_PREPROCESSOR_DEFINITIONS = NS_BUILD_32_LIKE_64;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/local/include;
+				"OTHER_CFLAGS[arch=i386]" = "-fsingle-precision-constant";
+				"OTHER_CFLAGS[arch=ppc]" = "-fsingle-precision-constant";
 				"OTHER_LDFLAGS[arch=i386]" = (
 					"-read_only_relocs",
 					suppress,
