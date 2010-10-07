@@ -23,8 +23,11 @@ CGImageRef NZCGImageCreateUsingWebPData(CFDataRef webPData)
 	uint8 *y = NULL, *u = NULL, *v = NULL;
 	int32_t width, height;
 	
+	if (CFDataGetLength(webPData) > INT_MAX)	// highly unlikely to happen; just checking anyway
+		return NULL;
+	
 	// Step 1: Decode the data.
-	if (WebPDecode(CFDataGetBytePtr(webPData), CFDataGetLength(webPData), &y, &u, &v, &width, &height) == webp_success)
+	if (WebPDecode(CFDataGetBytePtr(webPData), (int)CFDataGetLength(webPData), &y, &u, &v, &width, &height) == webp_success)
 	{
 		const int32_t depth = 32;
 		const int wordsPerLine = (width*depth+31)/32;
