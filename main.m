@@ -253,29 +253,37 @@ void NPP_StreamAsFile(NPP instance, NPStream* stream, const char* fname)
 }
 
 
-static void DrawUsingCoreGraphics(PluginObject *obj, CGContextRef cgContext, NPBool flipImage)
+static void DrawUsingCoreGraphics(PluginObject *obj, CGContextRef cgContext, NPBool forScreen)
 {
 	NSGraphicsContext *oldContext = [[NSGraphicsContext currentContext] retain];
     NSGraphicsContext *context = [NSGraphicsContext graphicsContextWithGraphicsPort:cgContext flipped:YES];
 	CGRect boundingBox = CGContextGetClipBoundingBox(cgContext);
 	CGSize imageSize = CGSizeMake(CGImageGetWidth(obj->theImage), CGImageGetHeight(obj->theImage));
 	
+	if (CGRectEqualToRect(boundingBox, CGRectZero))	// no bounding box, no draw operation
+		return;
+	
 	[NSGraphicsContext setCurrentContext:context];
 	// Draw the background:
 	[[NSColor whiteColor] set];
 	NSRectFillUsingOperation(boundingBox, NSCompositeSourceOver);
-	if (flipImage)
+	if (forScreen)
 	{
 		// Flip the context so the image draws right side up:
-		CGContextTranslateCTM(cgContext, 0, boundingBox.size.height);
+		CGContextTranslateCTM(cgContext, 0, obj->window.height);
 		CGContextScaleCTM(cgContext, 1.0, -1.0);
 	}
 	if (obj->theImage)
 	{
+		CGRect theRect;
+		
 		if (obj->drawCentered)
-			CGContextDrawImage(cgContext, CGRectMake((boundingBox.origin.x+boundingBox.size.width)/2.0-imageSize.width/2.0, (boundingBox.origin.y+boundingBox.size.height)/2.0-imageSize.height/2.0, imageSize.width, imageSize.height), obj->theImage);
+			theRect = CGRectMake((boundingBox.origin.x+boundingBox.size.width)/2.0-imageSize.width/2.0, (boundingBox.origin.y+boundingBox.size.height)/2.0-imageSize.height/2.0, imageSize.width, imageSize.height);
+		else if (forScreen)
+			theRect = CGRectMake(0.0, 0.0, obj->window.width, obj->window.height);
 		else
-			CGContextDrawImage(cgContext, /*CGRectMake(0.0, 0.0, obj->window.width, obj->window.height)*/boundingBox, obj->theImage);
+			theRect = boundingBox;
+		CGContextDrawImage(cgContext, CGRectIntegral(theRect), obj->theImage);
 	}
 	[NSGraphicsContext setCurrentContext:oldContext];
 }
