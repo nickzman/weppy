@@ -109,8 +109,11 @@ NPError NPP_New(NPMIMEType pluginType, NPP instance, uint16_t mode, int16_t argc
     // Ask the browser if it supports the CoreGraphics drawing model
     if (browser->getvalue(instance, NPNVsupportsCoreGraphicsBool, &supportsCoreGraphics) != NPERR_NO_ERROR)
         supportsCoreGraphics = FALSE;
+#if 0
+	// This code has been disabled because Google Chrome 6.0 is claiming to support CoreAnimation, but once it's turned on, it mysteriously destroys the plugin with no explanation given.
 	if (browser->getvalue(instance, /*NPNVsupportsCoreAnimationBool*/2003, &supportsCoreAnimation) != NPERR_NO_ERROR)
 		supportsCoreAnimation = FALSE;
+#endif
     if (!supportsCoreGraphics && !supportsCoreAnimation)	// we don't support QuickDraw, sorry
         return NPERR_INCOMPATIBLE_VERSION_ERROR;
     
