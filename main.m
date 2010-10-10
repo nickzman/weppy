@@ -13,9 +13,12 @@
 //
 // THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#import <WebKit/npapi.h>
+/*#import <WebKit/npapi.h>
 #import <WebKit/npfunctions.h>
-#import <WebKit/npruntime.h>
+#import <WebKit/npruntime.h>*/
+#import "npapi/npapi.h"
+#import "npapi/npfunctions.h"
+#import "npapi/npruntime.h"
 
 #import <Cocoa/Cocoa.h>
 #import <QuartzCore/QuartzCore.h>
@@ -32,6 +35,7 @@ typedef struct PluginObject
     NPWindow window;
 	
 	CALayer *caLayer;
+	NPBool shouldInvalidateCALayer;
 	NSMutableData *streamedData;
 	CGImageRef theImage;
 	NPBool drawCentered;
@@ -42,8 +46,8 @@ NPError NPP_Destroy(NPP instance, NPSavedData** save);
 NPError NPP_SetWindow(NPP instance, NPWindow* window);
 NPError NPP_NewStream(NPP instance, NPMIMEType type, NPStream* stream, NPBool seekable, uint16_t* stype);
 NPError NPP_DestroyStream(NPP instance, NPStream* stream, NPReason reason);
-int32 NPP_WriteReady(NPP instance, NPStream* stream);
-int32 NPP_Write(NPP instance, NPStream* stream, int32 offset, int32 len, void* buffer);
+int32_t NPP_WriteReady(NPP instance, NPStream* stream);
+int32_t NPP_Write(NPP instance, NPStream* stream, int32_t offset, int32_t len, void* buffer);
 void NPP_StreamAsFile(NPP instance, NPStream* stream, const char* fname);
 void NPP_Print(NPP instance, NPPrint* platformPrint);
 int16_t NPP_HandleEvent(NPP instance, void* event);
@@ -93,12 +97,18 @@ void NP_Shutdown(void)
 }
 
 
+char *NP_GetMIMEDescription(void)
+{
+	return ("image/webp:webp:WebP Image");
+}
+
+
 NPError NPP_New(NPMIMEType pluginType, NPP instance, uint16_t mode, int16_t argc, char* argn[], char* argv[], NPSavedData* saved)
 {
     // Create per-instance storage
     PluginObject *obj = (PluginObject *)malloc(sizeof(PluginObject));
 	NPBool supportsCoreGraphics;
-	NPBool supportsCoreAnimation = FALSE;
+	NPBool supportsCoreAnimation, supportsInvalidatingCoreAnimation;
 	NPBool supportsCocoa;
 	
     bzero(obj, sizeof(PluginObject));
@@ -109,18 +119,27 @@ NPError NPP_New(NPMIMEType pluginType, NPP instance, uint16_t mode, int16_t argc
     // Ask the browser if it supports the CoreGraphics drawing model
     if (browser->getvalue(instance, NPNVsupportsCoreGraphicsBool, &supportsCoreGraphics) != NPERR_NO_ERROR)
         supportsCoreGraphics = FALSE;
-#if 0
-	// This code has been disabled because Google Chrome 6.0 is claiming to support CoreAnimation, but once it's turned on, it mysteriously destroys the plugin with no explanation given.
-	if (browser->getvalue(instance, /*NPNVsupportsCoreAnimationBool*/2003, &supportsCoreAnimation) != NPERR_NO_ERROR)
+	if (browser->getvalue(instance, NPNVsupportsCoreAnimationBool, &supportsCoreAnimation) != NPERR_NO_ERROR)
 		supportsCoreAnimation = FALSE;
-#endif
-    if (!supportsCoreGraphics && !supportsCoreAnimation)	// we don't support QuickDraw, sorry
+	if (browser->getvalue(instance, NPNVsupportsInvalidatingCoreAnimationBool, &supportsInvalidatingCoreAnimation) != NPERR_NO_ERROR)
+		supportsInvalidatingCoreAnimation = FALSE;
+    if (!supportsCoreGraphics && !supportsCoreAnimation && !supportsInvalidatingCoreAnimation)	// we don't support QuickDraw, sorry
         return NPERR_INCOMPATIBLE_VERSION_ERROR;
+	
+	// Also check for Cocoa support...
+	if (browser->getvalue(instance, NPNVsupportsCocoaBool, &supportsCocoa) != NPERR_NO_ERROR)
+		supportsCocoa = FALSE;
     
 	// Prefer CoreAnimation over CoreGraphics when choosing drawing models.
-	if (supportsCoreAnimation)
+	if ((supportsCoreAnimation || supportsInvalidatingCoreAnimation) && supportsCocoa)	// CoreAnimation doesn't work if Cocoa isn't supported
 	{
-		browser->setvalue(instance, NPNVpluginDrawingModel, (void *)/*NPDrawingModelCoreAnimation*/3);
+		if (supportsInvalidatingCoreAnimation)
+		{
+			browser->setvalue(instance, NPNVpluginDrawingModel, (void *)NPDrawingModelInvalidatingCoreAnimation);
+			obj->shouldInvalidateCALayer = TRUE;
+		}
+		else
+			browser->setvalue(instance, NPNVpluginDrawingModel, (void *)NPDrawingModelCoreAnimation);
 		obj->caLayer = [[CALayer alloc] init];
 	}
 	else
@@ -128,18 +147,8 @@ NPError NPP_New(NPMIMEType pluginType, NPP instance, uint16_t mode, int16_t argc
 		browser->setvalue(instance, NPNVpluginDrawingModel, (void *)NPDrawingModelCoreGraphics);
 	}
 	
-#ifdef __LP64__
-    // If the browser supports the Cocoa event model, enable it.
-    if (browser->getvalue(instance, NPNVsupportsCocoaBool, &supportsCocoa) != NPERR_NO_ERROR)
-        supportsCocoa = FALSE;
-    
-    if (!supportsCocoa)
-        return NPERR_INCOMPATIBLE_VERSION_ERROR;
-    
-    browser->setvalue(instance, NPPVpluginEventModel, (void *)NPEventModelCocoa);
-#else
-	supportsCocoa = FALSE;
-#endif
+    if (supportsCocoa)
+		browser->setvalue(instance, NPPVpluginEventModel, (void *)NPEventModelCocoa);
     
     return NPERR_NO_ERROR;
 }
@@ -194,7 +203,7 @@ NPError NPP_DestroyStream(NPP instance, NPStream* stream, NPReason reason)
 	
 	if (reason == NPRES_DONE)
 	{
-		obj->theImage = NZCGImageCreateUsingWebPData((CFDataRef)obj->streamedData);
+		obj->theImage = NZCGImageCreateUsingWebPData((CFDataRef)obj->streamedData);	// here is where we convert the WebP data into a CGImageRef
 		
 		if (obj->theImage)
 		{
@@ -218,7 +227,9 @@ NPError NPP_DestroyStream(NPP instance, NPStream* stream, NPReason reason)
 		CFRelease(missingImageSource);
 	}
 	
-	if (!obj->caLayer)	// don't invalidate if CoreAnimation is being used because Safari will clear the screen if we're running in a background task, which is not what we want
+	// Now mark us as ready for displaying.
+	// Don't do this, however, if non-invalidating CoreAnimation is turned on. Otherwise, Safari will clear our view if it's running as 64-bit, and that's not what we want.
+	if (!obj->caLayer || obj->shouldInvalidateCALayer)
 	{
 		NPRect invalidateRect;
 		
@@ -232,13 +243,13 @@ NPError NPP_DestroyStream(NPP instance, NPStream* stream, NPReason reason)
 }
 
 
-int32 NPP_WriteReady(NPP instance, NPStream* stream)
+int32_t NPP_WriteReady(NPP instance, NPStream* stream)
 {
     return INT_MAX;	// bring it on!
 }
 
 
-int32 NPP_Write(NPP instance, NPStream* stream, int32 offset, int32 len, void* buffer)
+int32_t NPP_Write(NPP instance, NPStream* stream, int32_t offset, int32_t len, void* buffer)
 {
 	PluginObject *obj = instance->pdata;
 	
@@ -314,37 +325,43 @@ void NPP_Print(NPP instance, NPPrint* platformPrint)
 int16_t NPP_HandleEvent(NPP instance, void* event)
 {
 	PluginObject *obj = instance->pdata;
-#ifdef __LP64__
-    NPCocoaEvent *cocoaEvent = event;
-    
-    switch(cocoaEvent->type)
-	{
-		case NPCocoaEventDrawRect:
-			if (!obj->caLayer)
-			{
-				DrawUsingCoreGraphics(obj, cocoaEvent->data.draw.context, TRUE);
-				return 1;
-			}
-			break;
-		default:
-			break;
-	}
-#else
-	EventRecord *carbonEvent = event;
+	int32_t eventModel;
 	
-	if (carbonEvent->what == updateEvt)
+	browser->getvalue(instance, NPPVpluginEventModel, &eventModel);
+	if (eventModel == NPEventModelCocoa)
 	{
-		NP_CGContext *npcontext = obj->window.window;
+		NPCocoaEvent *cocoaEvent = event;
 		
-		if (npcontext)	// sometimes this is null
+		switch(cocoaEvent->type)
 		{
-			CGContextRef context = npcontext->context;
-			
-			DrawUsingCoreGraphics(obj, context, TRUE);
-			return 1;
+			case NPCocoaEventDrawRect:
+				if (!obj->caLayer)
+				{
+					DrawUsingCoreGraphics(obj, cocoaEvent->data.draw.context, TRUE);
+					return 1;
+				}
+				break;
+			default:
+				break;
 		}
 	}
-#endif
+	else
+	{
+		EventRecord *carbonEvent = event;
+		
+		if (carbonEvent->what == updateEvt)
+		{
+			NP_CGContext *npcontext = obj->window.window;
+			
+			if (npcontext)	// sometimes this is null
+			{
+				CGContextRef context = npcontext->context;
+				
+				DrawUsingCoreGraphics(obj, context, TRUE);
+				return 1;
+			}
+		}
+	}
 	return 0;
 }
 
@@ -359,7 +376,7 @@ NPError NPP_GetValue(NPP instance, NPPVariable variable, void *value)
 {
 	PluginObject *obj = instance->pdata;
 	
-	if (variable == /*NPPVpluginCoreAnimationLayer*/1003)
+	if (variable == NPPVpluginCoreAnimationLayer)
 	{
 		*((CALayer **)value) = [obj->caLayer retain];
 		return NPERR_NO_ERROR;
