@@ -42,6 +42,7 @@
 		E0013AC7125AC3860093A888 /* webpimg.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = webpimg.h; sourceTree = "<group>"; };
 		E0013ACD125AC3F00093A888 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E0013ACF125AC40B0093A888 /* libvpx.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvpx.a; path = /usr/local/lib/libvpx.a; sourceTree = "<absolute>"; };
+		E0831EC5126263F700DEE127 /* npapi */ = {isa = PBXFileReference; lastKnownFileType = folder; path = npapi; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +122,7 @@
 				E0013AC4125AC3860093A888 /* NZCGWebPFunctions.c */,
 				E0013AC7125AC3860093A888 /* webpimg.h */,
 				E0013AC6125AC3860093A888 /* webpimg.c */,
+				E0831EC5126263F700DEE127 /* npapi */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
