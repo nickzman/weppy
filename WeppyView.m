@@ -74,8 +74,9 @@
 	
 	if (image)
 	{
+		// Draw the image using CoreAnimation:
 		self.layer.contents = (id)image;
-		self.layer.contentsGravity = kCAGravityResize;
+		self.layer.contentsGravity = kCAGravityResize;	// here we want the image to get upscaled or downscaled if necessary
 	}
 	else
 		[self webPlugInMainResourceDidFailWithError:nil];	// if we couldn't decode the data, then draw the fail image
@@ -133,9 +134,10 @@
 	{
 		NSURL *fullURL = [NSURL URLWithString:[attributes objectForKey:@"src"] relativeToURL:baseURL];
 		
-		[NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL:fullURL] delegate:self];
+		[NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL:fullURL] delegate:self];	// we don't need to retain this because NSURLConnection retains its delegate
 	}
 	
+	// This plugin does all of its drawing using CoreAnimation (well, except when printing):
 	self.layer = [CALayer layer];
 	self.wantsLayer = YES;
     return self;
