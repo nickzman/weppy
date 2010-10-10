@@ -34,6 +34,7 @@ typedef struct PluginObject
     
     NPWindow window;
 	
+	NPBool shouldUseCocoa;
 	CALayer *caLayer;
 	NPBool shouldInvalidateCALayer;
 	NSMutableData *streamedData;
@@ -148,7 +149,10 @@ NPError NPP_New(NPMIMEType pluginType, NPP instance, uint16_t mode, int16_t argc
 	}
 	
     if (supportsCocoa)
+	{
 		browser->setvalue(instance, NPPVpluginEventModel, (void *)NPEventModelCocoa);
+		obj->shouldUseCocoa = TRUE;
+	}
     
     return NPERR_NO_ERROR;
 }
@@ -325,10 +329,8 @@ void NPP_Print(NPP instance, NPPrint* platformPrint)
 int16_t NPP_HandleEvent(NPP instance, void* event)
 {
 	PluginObject *obj = instance->pdata;
-	int32_t eventModel;
 	
-	browser->getvalue(instance, NPPVpluginEventModel, &eventModel);
-	if (eventModel == NPEventModelCocoa)
+	if (obj->shouldUseCocoa)
 	{
 		NPCocoaEvent *cocoaEvent = event;
 		
