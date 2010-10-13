@@ -59,8 +59,11 @@
 	CGImageSourceRef missingImageSource = CGImageSourceCreateWithURL((CFURLRef)[NSURL fileURLWithPath:missingImagePath], (CFDictionaryRef)[NSDictionary dictionary]);
 	CGImageRef missingImage = CGImageSourceCreateImageAtIndex(missingImageSource, 0UL, (CFDictionaryRef)[NSDictionary dictionary]);
 	
+	[CATransaction begin];
+	[CATransaction setValue:[NSNumber numberWithBool:YES] forKey:kCATransactionDisableActions];
 	self.layer.contents = (id)missingImage;
 	self.layer.contentsGravity = kCAGravityCenter;	// so the image doesn't get upscaled
+	[CATransaction commit];
 	CGImageRelease(missingImage);
 	CFRelease(missingImageSource);
 	[_downloadedData release];
@@ -75,8 +78,11 @@
 	if (image)
 	{
 		// Draw the image using CoreAnimation:
+		[CATransaction begin];
+		[CATransaction setValue:[NSNumber numberWithBool:YES] forKey:kCATransactionDisableActions];	// we only want to display our image; no special effects
 		self.layer.contents = (id)image;
 		self.layer.contentsGravity = kCAGravityResize;	// here we want the image to get upscaled or downscaled if necessary
+		[CATransaction commit];
 	}
 	else
 		[self webPlugInMainResourceDidFailWithError:nil];	// if we couldn't decode the data, then draw the fail image

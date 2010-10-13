@@ -209,10 +209,13 @@ NPError NPP_DestroyStream(NPP instance, NPStream* stream, NPReason reason)
 	{
 		obj->theImage = NZCGImageCreateUsingWebPData((CFDataRef)obj->streamedData);	// here is where we convert the WebP data into a CGImageRef
 		
-		if (obj->theImage)
+		if (obj->theImage && obj->caLayer)
 		{
+			[CATransaction begin];
+			[CATransaction setValue:[NSNumber numberWithBool:YES] forKey:kCATransactionDisableActions];	// we only want to display our image & not do anything fancy
 			obj->caLayer.contentsGravity = kCAGravityResize;
 			obj->caLayer.contents = (id)obj->theImage;
+			[CATransaction commit];
 		}
 	}
 	
@@ -224,8 +227,14 @@ NPError NPP_DestroyStream(NPP instance, NPStream* stream, NPReason reason)
 		CGImageSourceRef missingImageSource = CGImageSourceCreateWithURL((CFURLRef)[NSURL fileURLWithPath:missingImagePath], (CFDictionaryRef)[NSDictionary dictionary]);
 		CGImageRef missingImage = CGImageSourceCreateImageAtIndex(missingImageSource, 0UL, (CFDictionaryRef)[NSDictionary dictionary]);
 		
-		obj->caLayer.contentsGravity = kCAGravityCenter;
-		obj->caLayer.contents = (id)missingImage;
+		if (obj->caLayer)
+		{
+			[CATransaction begin];
+			[CATransaction setValue:[NSNumber numberWithBool:YES] forKey:kCATransactionDisableActions];
+			obj->caLayer.contentsGravity = kCAGravityCenter;
+			obj->caLayer.contents = (id)missingImage;
+			[CATransaction commit];
+		}
 		obj->theImage = missingImage;
 		obj->drawCentered = TRUE;
 		CFRelease(missingImageSource);
