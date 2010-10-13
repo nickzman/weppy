@@ -186,6 +186,14 @@ NPError NPP_SetWindow(NPP instance, NPWindow* window)
 		obj->boundingBox = CGContextGetClipBoundingBox(context);
 	}*/
     obj->window = *window;
+	// Workaround for a bug in Chrome where the layer frame size is set too late, causing us to draw at a fraction of our size if CoreAnimation is in use:
+	if (window && obj->caLayer)
+	{
+		[CATransaction begin];
+		[CATransaction setValue:[NSNumber numberWithBool:YES] forKey:kCATransactionDisableActions];	// don't animate this
+		obj->caLayer.frame = CGRectMake(0.0, 0.0, obj->window.width, obj->window.height);
+		[CATransaction commit];
+	}
     return NPERR_NO_ERROR;
 }
 
